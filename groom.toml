@@ -1,0 +1,7 @@
+name = "groom-install"
+
+[task.build]
+description = "Build the project"
+environment = ["CGO_ENABLED=0"]
+command = "go build -o groom-install cmd/groom-install/main.go"
+
