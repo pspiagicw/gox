@@ -2,6 +2,7 @@ package install
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"io/fs"
 	"os"
@@ -10,11 +11,14 @@ import (
 
 	"github.com/golang-groom/database"
 	"github.com/pspiagicw/goreland"
+	"github.com/pspiagicw/gox/pkg/compile"
+	"github.com/pspiagicw/gox/pkg/help"
 )
 
-const INSTALL_LOCATION = "/home/pspiagicw/.local/share/groom/bin"
+// TODO: Add directory resolver
+const INSTALL_LOCATION = "/home/pspiagicw/.local/share/gox/bin"
 const FAKE_INSTALLL = "/home/pspiagicw/.local/bin/"
-const DATABASE_LOCATION = "/home/pspiagicw/.local/share/groom/db"
+const DATABASE_LOCATION = "/home/pspiagicw/.local/share/gox/db"
 
 func updateDatabase(filename string, filepath string) {
 	err := database.AddPackage(database.Package{
@@ -22,13 +26,15 @@ func updateDatabase(filename string, filepath string) {
 		Path:      filepath,
 		Installed: time.Now(),
 	})
+
 	if err != nil {
 		goreland.LogError("Error updating database: %v", err)
-        goreland.LogError("Try installing again!")
+		goreland.LogError("Try installing again!")
 		os.Exit(1)
 	}
 }
-func checkIfAlreadyExists(name string) {
+
+func checkReinstall(name string) {
 	db, err := database.ParseDatabase()
 	if err != nil {
 		goreland.LogError("Error reading the database: %v", err)
@@ -39,27 +45,35 @@ func checkIfAlreadyExists(name string) {
 		}
 	}
 }
-func InstallBinaries(dir string, entry fs.DirEntry, url string) {
-    checkIfAlreadyExists(entry.Name())
-    goreland.LogInfo("Installing '%s'", entry.Name())
-    newLocation, err := installFile(dir, entry.Name())
-    if err != nil {
-        goreland.LogError("Error installing '%s': %v", entry.Name(), err)
-    }
-    updateDatabase(entry.Name(), newLocation)
-    err = addSymlink(entry.Name(), newLocation)
-    if err != nil {
-        goreland.LogError("Error symlinking binary: %v", err)
-    }
-    goreland.LogSuccess("Installation of '%s' successful!", entry.Name())
-    goreland.LogSuccess("'%s' was installed at %s", entry.Name(), newLocation)
-    goreland.LogSuccess("You don't have to worry about adding it to your PATH variable, that has been already done")
+func installBinary(dir string, entry fs.DirEntry, url string) {
+
+
+	checkReinstall(entry.Name())
+	goreland.LogInfo("Installing '%s'", entry.Name())
+	newLocation, err := installFile(dir, entry.Name())
+
+	if err != nil {
+		goreland.LogError("Error installing '%s': %v", entry.Name(), err)
+	}
+
+	updateDatabase(entry.Name(), newLocation)
+	err = addSymlink(entry.Name(), newLocation)
+	if err != nil {
+		goreland.LogError("Error symlinking binary: %v", err)
+	}
+
+    installSuccessful(entry, newLocation)
+}
+func installSuccessful(entry fs.DirEntry, location string) {
+	goreland.LogSuccess("Installation of '%s' successful!", entry.Name())
+	goreland.LogSuccess("'%s' was installed at %s", entry.Name(), location)
+	goreland.LogSuccess("You don't have to worry about adding it to your PATH variable, that has been already done")
 }
 
 func addSymlink(name string, location string) error {
-    fakeLocation := filepath.Join(FAKE_INSTALLL,name)
+	fakeLocation := filepath.Join(FAKE_INSTALLL, name)
 	removeIfExists(fakeLocation)
-    return os.Symlink(location, fakeLocation)
+	return os.Symlink(location, fakeLocation)
 }
 
 func removeIfExists(file string) {
@@ -73,6 +87,7 @@ func removeIfExists(file string) {
 		goreland.LogError("Error stating %s: %v", file, err)
 	}
 }
+
 func installFile(dir, filename string) (string, error) {
 	newLocation := filepath.Join(INSTALL_LOCATION, filename)
 	oldLocation := filepath.Join(dir, filename)
@@ -82,11 +97,50 @@ func installFile(dir, filename string) (string, error) {
 		CreateDir:   true,
 		Permissions: 755,
 	}
+
 	err := goreland.InstallFile(oldLocation, INSTALL_LOCATION, options)
 	if err != nil {
 		return "", fmt.Errorf("Error Installing Binary: %v", err)
 	}
 	return newLocation, nil
 }
+
+func parseInstallFlags(args []string) (string) {
+	flag := flag.NewFlagSet("gox install", flag.ExitOnError)
+
+	flag.Parse(args)
+	args = flag.Args()
+
+	if len(args) == 0 {
+		help.HelpInstall()
+		goreland.LogFatal("No URL/Path provided.")
+
+	}
+
+    url := args[0]
+
+    return url
+}
 func InstallPackage(args []string) {
+    url := parseInstallFlags(args)
+
+    binDir, err := compile.CompileProject(url)
+    if err != nil {
+        goreland.LogFatal("Error building the project: %v", err)
+    }
+
+    binary := getBinary(binDir)
+    installBinary(binDir, binary, url )
+}
+func getBinary(binDir string) fs.DirEntry {
+    entries, err:= os.ReadDir(binDir)
+
+    if err != nil {
+        goreland.LogFatal("Error reading the build directory: %v", err)
+    }
+
+    if len(entries) != 1 {
+        goreland.LogFatal("Binary not found!")
+    }
+    return entries[0]
 }

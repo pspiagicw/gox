@@ -10,26 +10,17 @@ import (
 	"github.com/pspiagicw/goreland"
 )
 
-func CompileProject(url string) (string, fs.DirEntry, error) {
+func CompileProject(url string) (string, error) {
 
 	dir := getTemp()
 	environments := getEnvironments(dir)
 	err := goreland.Execute("go", []string{"install", url}, environments)
 	if err != nil {
-		return "", nil, fmt.Errorf("Error executing 'go install': %v", err)
+		return "", fmt.Errorf("Error executing 'go install': %v", err)
 	}
 
 	binDir := getBinDir(dir)
-	entries, err := os.ReadDir(binDir)
-	if err != nil {
-		return "", nil, fmt.Errorf("Error while reading temp 'bin' directory: %v", err)
-	}
-
-    if len(entries) != 1 {
-        goreland.LogFatal("Expected 1 binary to be compiled!")
-    }
-
-	return binDir, entries[0], nil
+	return binDir, nil
 }
 
 func getEnvironments(dir string) []string {
