@@ -1,11 +1,11 @@
-module github.com/golang-groom/groom-install
+module github.com/pspiagicw/gox
 
 go 1.21.0
 
 require (
 	github.com/boltdb/bolt v1.3.1
 	github.com/golang-groom/database v0.0.0-20230829114230-84aefa31fae3
-	github.com/pspiagicw/goreland v0.0.0-20230829112259-9246cb3ccf66
+	github.com/pspiagicw/goreland v0.0.0-20230830041829-53c2ac7e9c8f
 )
 
 require (

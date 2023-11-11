@@ -1,4 +1,4 @@
-PROJNAME=groom-install
+PROJNAME=gox
 VERSION=0.1.0
 LDFLAGS="-X main.VERSION='$(VERSION)'"
 build:

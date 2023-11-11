@@ -19,6 +19,8 @@ github.com/muesli/termenv v0.15.2 h1:GohcuySI0QmI3wN8Ok9PtKGkgkFIk7y6Vpb5PvrY+Wo
 github.com/muesli/termenv v0.15.2/go.mod h1:Epx+iuz8sNs7mNKhxzH4fWXGNpZwUaJKRS1noLXviQ8=
 github.com/pspiagicw/goreland v0.0.0-20230829112259-9246cb3ccf66 h1:9RoY3ofmizS9e06Qo512TgMF9elDoZgYglrINx6f+gA=
 github.com/pspiagicw/goreland v0.0.0-20230829112259-9246cb3ccf66/go.mod h1:mup8VVGITfY6OjeS7HsQ2h0q0O+qwNQxWrgAI4bEODs=
+github.com/pspiagicw/goreland v0.0.0-20230830041829-53c2ac7e9c8f h1:t+n0THPO+RGx4COutCAlRwSOliXpjMWny4KUWWKZJdk=
+github.com/pspiagicw/goreland v0.0.0-20230830041829-53c2ac7e9c8f/go.mod h1:mup8VVGITfY6OjeS7HsQ2h0q0O+qwNQxWrgAI4bEODs=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.2.0 h1:S1pD9weZBuJdFmowNwbpi7BJ8TNftyUImj/0WQi72jY=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=

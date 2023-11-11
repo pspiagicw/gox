@@ -1,7 +1,10 @@
-name = "groom-install"
+name = "gox"
+
+[variables]
+main-file = "cmd/gox/main.go"
 
 [task.build]
 description = "Build the project"
 environment = ["CGO_ENABLED=0"]
-command = "go build -o groom-install cmd/groom-install/main.go"
+command = "go build -o $name ${main-file}"
 

@@ -1,4 +1,4 @@
-package compiler
+package compile
 
 import (
 	"errors"
@@ -10,7 +10,7 @@ import (
 	"github.com/pspiagicw/goreland"
 )
 
-func CompileProject(url string) (string, []fs.DirEntry, error) {
+func CompileProject(url string) (string, fs.DirEntry, error) {
 
 	dir := getTemp()
 	environments := getEnvironments(dir)
@@ -25,7 +25,11 @@ func CompileProject(url string) (string, []fs.DirEntry, error) {
 		return "", nil, fmt.Errorf("Error while reading temp 'bin' directory: %v", err)
 	}
 
-	return binDir, entries, nil
+    if len(entries) != 1 {
+        goreland.LogFatal("Expected 1 binary to be compiled!")
+    }
+
+	return binDir, entries[0], nil
 }
 
 func getEnvironments(dir string) []string {

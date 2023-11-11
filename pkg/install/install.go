@@ -1,4 +1,4 @@
-package installer
+package install
 
 import (
 	"errors"
@@ -13,6 +13,7 @@ import (
 )
 
 const INSTALL_LOCATION = "/home/pspiagicw/.local/share/groom/bin"
+const FAKE_INSTALLL = "/home/pspiagicw/.local/bin/"
 const DATABASE_LOCATION = "/home/pspiagicw/.local/share/groom/db"
 
 func updateDatabase(filename string, filepath string) {
@@ -38,19 +39,27 @@ func checkIfAlreadyExists(name string) {
 		}
 	}
 }
-func InstallBinaries(dir string, entries []fs.DirEntry) {
-	for _, entry := range entries {
-		checkIfAlreadyExists(entry.Name())
-		goreland.LogInfo("Installing '%s'", entry.Name())
-		newLocation, err := installFile(dir, entry.Name())
-		if err != nil {
-			goreland.LogError("Error installing '%s': %v", entry.Name(), err)
-		}
-		updateDatabase(entry.Name(), newLocation)
-        goreland.LogSuccess("Installation of '%s' successful!", entry.Name())
-        goreland.LogSuccess("'%s' was installed at %s", entry.Name(), newLocation)
-        goreland.LogSuccess("You don't have to worry about adding it to your PATH variable, that has been already done")
-	}
+func InstallBinaries(dir string, entry fs.DirEntry, url string) {
+    checkIfAlreadyExists(entry.Name())
+    goreland.LogInfo("Installing '%s'", entry.Name())
+    newLocation, err := installFile(dir, entry.Name())
+    if err != nil {
+        goreland.LogError("Error installing '%s': %v", entry.Name(), err)
+    }
+    updateDatabase(entry.Name(), newLocation)
+    err = addSymlink(entry.Name(), newLocation)
+    if err != nil {
+        goreland.LogError("Error symlinking binary: %v", err)
+    }
+    goreland.LogSuccess("Installation of '%s' successful!", entry.Name())
+    goreland.LogSuccess("'%s' was installed at %s", entry.Name(), newLocation)
+    goreland.LogSuccess("You don't have to worry about adding it to your PATH variable, that has been already done")
+}
+
+func addSymlink(name string, location string) error {
+    fakeLocation := filepath.Join(FAKE_INSTALLL,name)
+	removeIfExists(fakeLocation)
+    return os.Symlink(location, fakeLocation)
 }
 
 func removeIfExists(file string) {
@@ -78,4 +87,6 @@ func installFile(dir, filename string) (string, error) {
 		return "", fmt.Errorf("Error Installing Binary: %v", err)
 	}
 	return newLocation, nil
+}
+func InstallPackage(args []string) {
 }
