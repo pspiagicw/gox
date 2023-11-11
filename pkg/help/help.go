@@ -9,4 +9,9 @@ func PrintUsage() {
 
 func HelpInstall() {
     // TODO: Print Help Message for Installation of package.
+    goreland.LogInfo("Printing help for install command not implemented yet!")
+}
+func HelpRemove() {
+    // TODO: Print Help message for Removal of package.
+    goreland.LogInfo("Printing help for remove command not implemented yet!")
 }

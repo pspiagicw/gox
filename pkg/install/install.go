@@ -132,10 +132,11 @@ func InstallPackage(args []string) {
     binary := getBinary(binDir)
     installBinary(binDir, binary, url )
 }
+
 func getBinary(binDir string) fs.DirEntry {
     entries, err:= os.ReadDir(binDir)
 
-    if err != nil {
+   if err != nil {
         goreland.LogFatal("Error reading the build directory: %v", err)
     }
 
