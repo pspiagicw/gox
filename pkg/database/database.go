@@ -3,12 +3,10 @@ package database
 import (
 	"encoding/json"
 	"fmt"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/boltdb/bolt"
-	"github.com/pspiagicw/goreland"
+	"github.com/pspiagicw/gox/pkg/resolver"
 )
 
 type Package struct {
@@ -23,29 +21,8 @@ type GoxDatabase struct {
 	Packages map[string]Package `json:"packages"`
 }
 
-func getDatabasePath() string {
-	location, exists := os.LookupEnv("XDG_DATA_HOME")
-	if !exists {
-		goreland.LogInfo("Not using $XDG_DATA_HOME, env variable not present")
-		homedir, err := os.UserHomeDir()
-		if err != nil {
-			goreland.LogFatal("Error while getting $HOME directory: %v", err)
-		}
-		d := filepath.Join(homedir, ".local")
-		d = filepath.Join(d, "share")
-		d = filepath.Join(d, "gox")
-		d = filepath.Join(d, "db")
-		goreland.LogInfo("Using %s for database", d)
-		return d
-	}
-	d := filepath.Join(location, "gox")
-	d = filepath.Join(d, "db")
-	goreland.LogInfo("Using %s for database", d)
-	return d
-
-}
 func ParseDatabase() (*GoxDatabase, error) {
-	path := getDatabasePath()
+	path := resolver.DatabasePath()
 
 	database, err := readDatabase(path)
 
@@ -102,7 +79,7 @@ func readDatabase(path string) (*GoxDatabase, error) {
 }
 
 func AddPackage(pack Package) error {
-	path := getDatabasePath()
+	path := resolver.DatabasePath()
 
 	db, err := bolt.Open(path, 0600, nil)
 	defer db.Close()

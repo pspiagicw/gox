@@ -9,16 +9,12 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/pspiagicw/gox/pkg/database"
 	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/gox/pkg/compile"
+	"github.com/pspiagicw/gox/pkg/database"
 	"github.com/pspiagicw/gox/pkg/help"
+	"github.com/pspiagicw/gox/pkg/resolver"
 )
-
-// TODO: Add directory resolver
-const INSTALL_LOCATION = "/home/pspiagicw/.local/share/gox/bin"
-const FAKE_INSTALLL = "/home/pspiagicw/.local/bin/"
-const DATABASE_LOCATION = "/home/pspiagicw/.local/share/gox/db"
 
 func updateDatabase(filename string, filepath string) {
 	err := database.AddPackage(database.Package{
@@ -71,7 +67,8 @@ func installSuccessful(entry fs.DirEntry, location string) {
 }
 
 func addSymlink(name string, location string) error {
-	fakeLocation := filepath.Join(FAKE_INSTALLL, name)
+	fakeLocation := filepath.Join(resolver.BinDir(), name)
+    goreland.LogInfo("Symlinking binary into %s", fakeLocation)
 	removeIfExists(fakeLocation)
 	return os.Symlink(location, fakeLocation)
 }
@@ -89,16 +86,16 @@ func removeIfExists(file string) {
 }
 
 func installFile(dir, filename string) (string, error) {
-	newLocation := filepath.Join(INSTALL_LOCATION, filename)
+	newLocation := filepath.Join(resolver.InstallDir(), filename)
 	oldLocation := filepath.Join(dir, filename)
 	removeIfExists(newLocation)
 
 	options := &goreland.InstallFileOptions{
 		CreateDir:   true,
-		Permissions: 755,
+		Permissions: 0755,
 	}
 
-	err := goreland.InstallFile(oldLocation, INSTALL_LOCATION, options)
+	err := goreland.InstallFile(oldLocation, resolver.InstallDir(), options)
 	if err != nil {
 		return "", fmt.Errorf("Error Installing Binary: %v", err)
 	}
