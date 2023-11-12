@@ -3,6 +3,7 @@ package handle
 import (
 	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/gox/pkg/install"
+	"github.com/pspiagicw/gox/pkg/list"
 	"github.com/pspiagicw/gox/pkg/remove"
 )
 
@@ -12,7 +13,7 @@ func HandleArgs(cmd string, args []string) {
         "help": printHelp,
         "install": install.InstallPackage,
         "remove": remove.RemovePackage,
-        "list": notImplemented,
+        "list": list.ListPackage,
         "version": notImplemented,
     }
 

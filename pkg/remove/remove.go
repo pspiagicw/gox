@@ -2,7 +2,6 @@ package remove
 
 import (
 	"flag"
-	"os"
 
 	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/gox/pkg/help"
@@ -12,8 +11,8 @@ const FAKE_INSTALLL = "/home/pspiagicw/.local/bin/"
 func parseRemoveFlags(args []string) string {
     flag := flag.NewFlagSet("gox remove", flag.ExitOnError)
 
-    flag.Parse()
-    args := flag.Args()
+    flag.Parse(args)
+    args = flag.Args()
 
     if len(args) == 0 {
         help.HelpRemove()
@@ -25,7 +24,7 @@ func parseRemoveFlags(args []string) string {
 }
 
 func RemovePackage(args []string) {
-    name := parseRemoveFlags(args)
+    _ = parseRemoveFlags(args)
     // TODO: Implement Removal of pacakge.
     goreland.LogFatal("NOT IMPLELMENTED YET!")
 

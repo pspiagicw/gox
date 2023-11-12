@@ -1,7 +1,7 @@
 name = "gox"
 
 [variables]
-main-file = "cmd/gox/main.go"
+main-file = "main.go"
 
 [task.build]
 description = "Build the project"

@@ -1,13 +1,12 @@
 package compile
 
 import (
-	"errors"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 
 	"github.com/pspiagicw/goreland"
+	"github.com/pspiagicw/gox/pkg/resolver"
 )
 
 func CompileProject(url string) (string, error) {
@@ -31,51 +30,32 @@ func getEnvironments(dir string) []string {
 
 	return []string{binDir, cacheDir, gopath, gomodcache, "GIT_SSL_NO_VERIFY=1"}
 }
+
 func getTemp() string {
-	dir, err := os.MkdirTemp("", "")
+	dir, err := os.MkdirTemp("", "gox-build")
 
 	if err != nil {
-		goreland.LogError("Error creating temp directory: %v", err)
-		os.Exit(1)
+		goreland.LogFatal("Error creating temp directory: %v", err)
 	}
 
 	return dir
 }
+
 func getBinDir(dir string) string {
 	binDir := filepath.Join(dir, "bin")
-	createIfNeeded(binDir)
+    resolver.EnsureExists(binDir)
 	return binDir
 }
 
 func getCacheDir(dir string) string {
-	cachedir := filepath.Join(dir, "cache")
-	createIfNeeded(cachedir)
-	return cachedir
+	cacheDir := filepath.Join(dir, "cache")
+    resolver.EnsureExists(cacheDir)
+	return cacheDir
 }
 func getModDir(dir string) string {
 	modpath := filepath.Join(dir, "pkg")
 	modpath = filepath.Join(modpath, "mod")
-	createIfNeeded(modpath)
+    resolver.EnsureExists(modpath)
 	return modpath
 }
 
-func dirExists(dir string) bool {
-	_, err := os.Stat(dir)
-	if errors.Is(err, fs.ErrNotExist) {
-		return false
-	} else if err != nil {
-		goreland.LogError("Error stating directory: %v", err)
-		return false
-	}
-	return true
-}
-func createIfNeeded(dir string) {
-	if dirExists(dir) == false {
-		err := os.MkdirAll(dir, 0755)
-		if err != nil {
-			goreland.LogError("There was a error creating the bin directory: %v", err)
-			os.Exit(1)
-		}
-	}
-
-}
