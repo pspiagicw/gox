@@ -8,10 +8,11 @@ import (
 
 	"github.com/pspiagicw/goreland"
 )
+
 func InstallDir() string {
-    b := filepath.Join(DataDir(), "bin")
-    EnsureExists(b)
-    return b
+	b := filepath.Join(DataDir(), "bin")
+	EnsureExists(b)
+	return b
 }
 
 func HomeDir() string {
@@ -20,28 +21,28 @@ func HomeDir() string {
 		goreland.LogFatal("Error while getting $HOME directory: %v", err)
 	}
 
-    return homeDir
+	return homeDir
 }
 
 func BinDir() string {
-    d := filepath.Join(HomeDir(), ".local")
-    d = filepath.Join(d, "bin")
+	d := filepath.Join(HomeDir(), ".local")
+	d = filepath.Join(d, "bin")
 
-    EnsureExists(d)
-    return d
+	EnsureExists(d)
+	return d
 }
 
 func DataDir() string {
 	location, exists := os.LookupEnv("XDG_DATA_HOME")
 	if !exists {
 		goreland.LogInfo("Not using $XDG_DATA_HOME, env variable not present")
-        homedir := HomeDir()
+		homedir := HomeDir()
 		d := filepath.Join(homedir, ".local")
 		d = filepath.Join(d, "share")
 		goreland.LogInfo("Using %s for data", d)
-        location = d
+		location = d
 	}
-    location = filepath.Join(location, "gox")
+	location = filepath.Join(location, "gox")
 	EnsureExists(location)
 	return location
 }

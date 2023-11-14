@@ -43,19 +43,18 @@ func getTemp() string {
 
 func getBinDir(dir string) string {
 	binDir := filepath.Join(dir, "bin")
-    resolver.EnsureExists(binDir)
+	resolver.EnsureExists(binDir)
 	return binDir
 }
 
 func getCacheDir(dir string) string {
 	cacheDir := filepath.Join(dir, "cache")
-    resolver.EnsureExists(cacheDir)
+	resolver.EnsureExists(cacheDir)
 	return cacheDir
 }
 func getModDir(dir string) string {
 	modpath := filepath.Join(dir, "pkg")
 	modpath = filepath.Join(modpath, "mod")
-    resolver.EnsureExists(modpath)
+	resolver.EnsureExists(modpath)
 	return modpath
 }
-

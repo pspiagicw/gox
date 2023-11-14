@@ -15,10 +15,10 @@ type SystemExecutor struct {
 
 func (s *SystemExecutor) Execute(cmd string, options []string, environment []string) error {
 	command := exec.Command(cmd, options...)
-    envs := command.Environ()
-    envs = append(envs, environment...)
-    // fmt.Println(envs)
-    command.Env = envs
+	envs := command.Environ()
+	envs = append(envs, environment...)
+	// fmt.Println(envs)
+	command.Env = envs
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
 	log.Printf("Executing '%s' on your operating system", command.String())

@@ -16,11 +16,13 @@ import (
 	"github.com/pspiagicw/gox/pkg/resolver"
 )
 
-func updateDatabase(filename string, filepath string) {
+func updateDatabase(filename string, filepath string, url string) {
+
 	err := database.AddPackage(database.Package{
 		Name:      filename,
 		Path:      filepath,
 		Installed: time.Now(),
+		URL:       url,
 	})
 
 	if err != nil {
@@ -31,10 +33,8 @@ func updateDatabase(filename string, filepath string) {
 }
 
 func checkReinstall(name string) {
-	db, err := database.ParseDatabase()
-	if err != nil {
-		goreland.LogError("Error reading the database: %v", err)
-	}
+	db := database.ParseDatabase()
+
 	for key := range db.Packages {
 		if key == name {
 			goreland.LogInfo("Package %s already installed, reinstalling...", name)
@@ -43,22 +43,20 @@ func checkReinstall(name string) {
 }
 func installBinary(dir string, entry fs.DirEntry, url string) {
 
-
 	checkReinstall(entry.Name())
 	goreland.LogInfo("Installing '%s'", entry.Name())
+
 	newLocation, err := installFile(dir, entry.Name())
 
 	if err != nil {
 		goreland.LogError("Error installing '%s': %v", entry.Name(), err)
 	}
 
-	updateDatabase(entry.Name(), newLocation)
-	err = addSymlink(entry.Name(), newLocation)
-	if err != nil {
-		goreland.LogError("Error symlinking binary: %v", err)
-	}
+	updateDatabase(entry.Name(), newLocation, url)
 
-    installSuccessful(entry, newLocation)
+	addSymlink(entry.Name(), newLocation)
+
+	installSuccessful(entry, newLocation)
 }
 func installSuccessful(entry fs.DirEntry, location string) {
 	goreland.LogSuccess("Installation of '%s' successful!", entry.Name())
@@ -66,11 +64,14 @@ func installSuccessful(entry fs.DirEntry, location string) {
 	goreland.LogSuccess("You don't have to worry about adding it to your PATH variable, that has been already done")
 }
 
-func addSymlink(name string, location string) error {
+func addSymlink(name string, location string) {
 	fakeLocation := filepath.Join(resolver.BinDir(), name)
-    goreland.LogInfo("Symlinking binary into %s", fakeLocation)
+	goreland.LogInfo("Symlinking binary into %s", fakeLocation)
 	removeIfExists(fakeLocation)
-	return os.Symlink(location, fakeLocation)
+	err := os.Symlink(location, fakeLocation)
+	if err != nil {
+		goreland.LogFatal("Error symlinking binary: %v", err)
+	}
 }
 
 func removeIfExists(file string) {
@@ -102,7 +103,7 @@ func installFile(dir, filename string) (string, error) {
 	return newLocation, nil
 }
 
-func parseInstallFlags(args []string) (string) {
+func parseInstallFlags(args []string) string {
 	flag := flag.NewFlagSet("gox install", flag.ExitOnError)
 
 	flag.Parse(args)
@@ -111,34 +112,45 @@ func parseInstallFlags(args []string) (string) {
 	if len(args) == 0 {
 		help.HelpInstall()
 		goreland.LogFatal("No URL/Path provided.")
-
 	}
 
-    url := args[0]
+	url := args[0]
 
-    return url
+	return url
+}
+func getCurrentDir() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		goreland.LogFatal("Error can't resolve current directory: %v", err)
+	}
+	return dir
+
 }
 func InstallPackage(args []string) {
-    url := parseInstallFlags(args)
+	url := parseInstallFlags(args)
 
-    binDir, err := compile.CompileProject(url)
-    if err != nil {
-        goreland.LogFatal("Error building the project: %v", err)
-    }
+	if url == "." {
+		url = getCurrentDir()
+	}
 
-    binary := getBinary(binDir)
-    installBinary(binDir, binary, url )
+	binDir, err := compile.CompileProject(url)
+	if err != nil {
+		goreland.LogFatal("Error building the project: %v", err)
+	}
+
+	binary := getBinary(binDir)
+	installBinary(binDir, binary, url)
 }
 
 func getBinary(binDir string) fs.DirEntry {
-    entries, err:= os.ReadDir(binDir)
+	entries, err := os.ReadDir(binDir)
 
-   if err != nil {
-        goreland.LogFatal("Error reading the build directory: %v", err)
-    }
+	if err != nil {
+		goreland.LogFatal("Error reading the build directory: %v", err)
+	}
 
-    if len(entries) != 1 {
-        goreland.LogFatal("Binary not found!")
-    }
-    return entries[0]
+	if len(entries) != 1 {
+		goreland.LogFatal("Binary not found!")
+	}
+	return entries[0]
 }

@@ -6,17 +6,13 @@ import (
 )
 
 func ListPackage(args []string) {
-	gdb, err := database.ParseDatabase()
+	gdb := database.ParseDatabase()
 
-	if err != nil {
-		goreland.LogFatal("Error parsing database: %v", err)
-	}
-
-	headers := []string{"Package Name", "Package Path"}
+	headers := []string{"Package Name", "Package Path", "Package URL"}
 	rows := [][]string{}
 
 	for name, pack := range gdb.Packages {
-		rows = append(rows, []string{name, pack.Name})
+		rows = append(rows, []string{name, pack.Path, pack.URL})
 	}
 
 	if len(rows) == 0 {
@@ -24,7 +20,5 @@ func ListPackage(args []string) {
 
 	} else {
 		goreland.LogTable(headers, rows)
-
 	}
-
 }

@@ -8,9 +8,9 @@ import (
 var VERSION string
 
 func main() {
-    cmd, args := argparse.ParseArguments(VERSION)
-    handle.HandleArgs(cmd, args)
-    // goreland.LogSuccess("Installing '%s'", argument)
+	cmd, args := argparse.ParseArguments(VERSION)
+	handle.HandleArgs(cmd, args)
+	// goreland.LogSuccess("Installing '%s'", argument)
 
 	// binDir, entry, err := compile.CompileProject(argument)
 	//
@@ -20,4 +20,3 @@ func main() {
 	// }
 	// installer.InstallBinaries(binDir, entry, argument)
 }
-

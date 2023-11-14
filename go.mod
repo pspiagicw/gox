@@ -4,7 +4,7 @@ go 1.21.0
 
 require (
 	github.com/boltdb/bolt v1.3.1
-	github.com/pspiagicw/goreland v0.0.0-20231111114129-17d31554ad48
+	github.com/pspiagicw/goreland v0.0.0-20231114040425-9e1a4343f6f4
 )
 
 require (

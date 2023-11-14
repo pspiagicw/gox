@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/boltdb/bolt"
+	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/gox/pkg/resolver"
 )
 
@@ -15,22 +16,23 @@ type Package struct {
 	Version   string    `json:"version"`
 	Path      string    `json:"path"`
 	Installed time.Time `json:"installed"`
+	URL       string    `json:"url"`
 }
 
 type GoxDatabase struct {
 	Packages map[string]Package `json:"packages"`
 }
 
-func ParseDatabase() (*GoxDatabase, error) {
+func ParseDatabase() *GoxDatabase {
 	path := resolver.DatabasePath()
 
 	database, err := readDatabase(path)
 
 	if err != nil {
-		return nil, err
+		goreland.LogFatal("Error parsing database: %v", err)
 	}
 
-	return database, nil
+	return database
 
 }
 func readPackages(b *bolt.Bucket, packages map[string]Package) {
@@ -51,9 +53,9 @@ func readDatabase(path string) (*GoxDatabase, error) {
 	gdb.Packages = map[string]Package{}
 
 	db, err := bolt.Open(path, 0600, nil)
-    if db != nil {
-        defer db.Close()
-    }
+	if db != nil {
+		defer db.Close()
+	}
 
 	if err != nil {
 		return nil, fmt.Errorf("Error reading the database: %v", err)
@@ -66,7 +68,7 @@ func readDatabase(path string) (*GoxDatabase, error) {
 			return fmt.Errorf("Error opening bucket: %v", err)
 		}
 
-        readPackages(b, gdb.Packages)
+		readPackages(b, gdb.Packages)
 
 		return nil
 	})
