@@ -108,3 +108,28 @@ func AddPackage(pack Package) error {
 	})
 	return err
 }
+func RemovePackage(entry Package) error {
+	path := resolver.DatabasePath()
+
+	db, err := bolt.Open(path, 0600, nil)
+	defer db.Close()
+	if err != nil {
+		return fmt.Errorf("Error reading the database: %v", err)
+	}
+
+	err = db.Update(func(tx *bolt.Tx) error {
+		b, err := tx.CreateBucketIfNotExists([]byte("packages"))
+
+		if err != nil || b == nil {
+			return fmt.Errorf("Error creating bucket: %v", err)
+		}
+
+		err = b.Delete([]byte(entry.Name))
+		if err != nil {
+			return fmt.Errorf("Error deleting package from database: %v", err)
+		}
+		return nil
+
+	})
+	return err
+}

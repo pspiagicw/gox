@@ -2,10 +2,13 @@ package remove
 
 import (
 	"flag"
+	"os"
+	"path/filepath"
 
 	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/gox/pkg/database"
 	"github.com/pspiagicw/gox/pkg/help"
+	"github.com/pspiagicw/gox/pkg/resolver"
 )
 
 const FAKE_INSTALLL = "/home/pspiagicw/.local/bin/"
@@ -37,5 +40,34 @@ func RemovePackage(args []string) {
 		goreland.LogFatal("Package is not installed!")
 	}
 
-	goreland.LogInfo("Removing file %s", entry.Path)
+	binLocation := getBinDir(entry.Name)
+
+	removeFile(binLocation)
+
+	goreland.LogInfo("Deleted '%s'", binLocation)
+
+	originalPath := entry.Path
+
+	removeFile(originalPath)
+
+	goreland.LogInfo("Deleted '%s'", originalPath)
+
+	database.RemovePackage(entry)
+
+	goreland.LogInfo("Entry deleted from database")
+
+	goreland.LogSuccess("Package deleted!")
+
+}
+func getBinDir(name string) string {
+	binDir := resolver.BinDir()
+
+	return filepath.Join(binDir, name)
+}
+
+func removeFile(filepath string) {
+	err := os.Remove(filepath)
+	if err != nil {
+		goreland.LogFatal("Error deleting '%s': %v", filepath, err)
+	}
 }
