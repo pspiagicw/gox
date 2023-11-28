@@ -17,7 +17,7 @@ func HandleArgs(cmd string, args []string) {
 		"list":       list.ListPackage,
 		"version":    notImplemented,
 		"update":     update.UpdatePackage,
-		"update-all": notImplemented,
+		"update-all": update.UpdateAll,
 	}
 
 	handlerFunc, exists := handlers[cmd]

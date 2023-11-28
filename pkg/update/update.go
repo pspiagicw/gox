@@ -35,6 +35,16 @@ func UpdatePackage(args []string) {
 		goreland.LogFatal("Package does not exist!")
 	}
 
-	install.InstallPackage([]string{entry.URL})
+	goreland.LogInfo("Using '%s' for [%s]", entry.URL, entry.Name)
 
+	install.InstallPackage([]string{entry.URL})
+}
+func UpdateAll(args []string) {
+	db := database.ParseDatabase()
+
+	for name := range db.Packages {
+		goreland.LogInfo("Updating package [%s]", name)
+		UpdatePackage([]string{name})
+	}
+	goreland.LogSuccess("Updated all packages!")
 }
