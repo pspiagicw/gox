@@ -13,3 +13,18 @@ command = 'go build -ldflags "$ldflags" -o $name ${main-file}'
 [task.format]
 description = "Format the project."
 command = "go fmt ./..."
+
+[task.release]
+description = "Prepare release assets"
+commands = [
+    "mkdir build",
+    "groom build",
+    "mv gox build/",
+    "cp README.md build/",
+    "cp LICENSE build/",
+    "tar -czvf $name-$version-amd64.tar.gz build/"
+]
+
+[task.clean]
+description = "Clean build artifacts"
+command = "rm -rf build"
