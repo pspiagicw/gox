@@ -4,21 +4,27 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/gox/pkg/resolver"
 )
 
 func CompileProject(url string) (string, error) {
 
+    s := spinner.New(spinner.CharSets[14], 100 * time.Millisecond)
+    s.Start()
 	dir := getTemp()
 	environments := getEnvironments(dir)
-	err := goreland.Execute("go", []string{"install", url}, environments)
+    err := goreland.ExecuteWithoutOutput("go", []string{"install", url}, environments)
 	if err != nil {
 		return "", fmt.Errorf("Error executing 'go install': %v", err)
 	}
 
 	binDir := getBinDir(dir)
+    s.Stop()
+    goreland.LogSuccess("Package compiled succesfully!")
 	return binDir, nil
 }
 

@@ -11,8 +11,6 @@ import (
 	"github.com/pspiagicw/gox/pkg/resolver"
 )
 
-const FAKE_INSTALLL = "/home/pspiagicw/.local/bin/"
-
 func parseRemoveFlags(args []string) string {
 	flag := flag.NewFlagSet("gox remove", flag.ExitOnError)
 

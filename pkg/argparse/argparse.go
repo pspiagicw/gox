@@ -8,12 +8,16 @@ import (
 )
 
 func ParseArguments(VERSION string) (string, []string) {
-	flag.Usage = help.PrintUsage
+
+	flag.Usage = func() {
+        help.PrintUsage(VERSION)
+    }
+
 	flag.Parse()
 	args := flag.Args()
 
 	if len(args) == 0 {
-		help.PrintUsage()
+		help.PrintUsage(VERSION)
 		goreland.LogFatal("No subcommands provided!")
 	}
 

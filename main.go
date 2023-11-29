@@ -9,5 +9,5 @@ var VERSION string
 
 func main() {
 	cmd, args := argparse.ParseArguments(VERSION)
-	handle.HandleArgs(cmd, args)
+	handle.HandleArgs(cmd, args, VERSION)
 }
