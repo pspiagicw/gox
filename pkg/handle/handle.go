@@ -12,13 +12,15 @@ import (
 func HandleArgs(cmd string, args []string, version string) {
 
 	handlers := map[string]func([]string){
-		"help":       func([]string) {
-            help.HelpArgs(args, version)
-        },
-		"install":    install.InstallPackage,
-		"remove":     remove.RemovePackage,
-		"list":       list.ListPackage,
-		"version":    notImplemented,
+		"help": func([]string) {
+			help.HelpArgs(args, version)
+		},
+		"install": install.InstallPackage,
+		"remove":  remove.RemovePackage,
+		"list":    list.ListPackage,
+		"version": func([]string) {
+			help.PrintVersion(version)
+		},
 		"update":     update.UpdatePackage,
 		"update-all": update.UpdateAll,
 	}
@@ -28,7 +30,7 @@ func HandleArgs(cmd string, args []string, version string) {
 	if exists {
 		handlerFunc(args)
 	} else {
-        help.PrintUsage(version)
+		help.PrintUsage(version)
 	}
 }
 

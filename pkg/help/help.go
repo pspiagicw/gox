@@ -6,6 +6,9 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/pspiagicw/goreland"
 )
+func PrintVersion(version string) {
+    fmt.Printf("gox version %s\n", version)
+}
 
 func PrintUsage(version string) {
     goreland.LogInfo("gox version: %s", version)
