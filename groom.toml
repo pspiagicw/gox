@@ -2,7 +2,7 @@ name = "gox"
 
 [variables]
 main-file = "main.go"
-version = '0.0.1'
+version = '0.0.2'
 ldflags = "-X main.VERSION=$version"
 
 [task.build]
@@ -22,7 +22,11 @@ commands = [
     "mv gox build/",
     "cp README.md build/",
     "cp LICENSE build/",
-    "tar -czvf $name-$version-amd64.tar.gz build/"
+    "tar -czvf $name-$version-amd64.tar.gz build/",
+    "groom clean"
+]
+depends = [
+    "clean"
 ]
 
 [task.clean]
