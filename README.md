@@ -25,17 +25,17 @@ Removes the package instantly. Any dependencies were never installed, so easy cl
 
 ![remove](./gifs/remove.gif)
 
-### Upgrade
+### Update
 
-Upgrades any given package from it's source, does everything in isolation.
+Updates any given package from it's source, does everything in isolation.
 
-![upgrade](./gifs/upgrade.gif)
+![update](./gifs/update.gif)
 
 ### List
 
 Lists all the installed commands along with their installed location.
 
-![list](./gifs/upgrade.gif)
+![list](./gifs/list.gif)
 
 ## Installation
 

@@ -1,4 +1,4 @@
-Output upgrade.gif
+Output update.gif
 
 Set Margin 20
 Set MarginFill "#6B50FF"
@@ -11,7 +11,7 @@ Set FontFamily "JetBrains Mono"
 
 Set BorderRadius 5
 
-Type "gox upgrade groom"
+Type "gox update groom"
 
 Sleep 500ms
 

@@ -11,7 +11,7 @@ Set FontFamily "JetBrains Mono"
 
 Set BorderRadius 5
 
-Type "gox install github.com/pspiagicw/groom@latest"
+Type "gox list"
 
 Sleep 500ms
 

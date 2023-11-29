@@ -33,6 +33,8 @@ github.com/pspiagicw/goreland v0.0.0-20231114040425-9e1a4343f6f4 h1:1I20HwlkaDZe
 github.com/pspiagicw/goreland v0.0.0-20231114040425-9e1a4343f6f4/go.mod h1:w9C97TNLperGU930lN/hc2XuWUlYzPbBUW1OA1ka4DM=
 github.com/pspiagicw/goreland v0.0.0-20231129054727-5af23e552685 h1:3g8GXyEtS2sTDTeXEdGrCDRSMIItjpBjfJB5JaDjGvA=
 github.com/pspiagicw/goreland v0.0.0-20231129054727-5af23e552685/go.mod h1:w9C97TNLperGU930lN/hc2XuWUlYzPbBUW1OA1ka4DM=
+github.com/pspiagicw/goreland v0.0.0-20231129142734-b41cec944b31 h1:2B34IUDZ5JSzFvaqK1cs5WRM0AIwfbGwB8aXIyppqFo=
+github.com/pspiagicw/goreland v0.0.0-20231129142734-b41cec944b31/go.mod h1:w9C97TNLperGU930lN/hc2XuWUlYzPbBUW1OA1ka4DM=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.2.0 h1:S1pD9weZBuJdFmowNwbpi7BJ8TNftyUImj/0WQi72jY=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=

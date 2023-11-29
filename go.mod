@@ -6,7 +6,7 @@ require (
 	github.com/boltdb/bolt v1.3.1
 	github.com/briandowns/spinner v1.23.0
 	github.com/charmbracelet/lipgloss v0.9.1
-	github.com/pspiagicw/goreland v0.0.0-20231129054727-5af23e552685
+	github.com/pspiagicw/goreland v0.0.0-20231129142734-b41cec944b31
 )
 
 require (

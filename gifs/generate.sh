@@ -2,6 +2,6 @@
 #
 hcho "Generating all gifs!!"
 
-for filename in install upgrade list remove; do
+for filename in install update list remove; do
     vhs "tapes/$filename.tape"
 done
