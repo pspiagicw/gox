@@ -14,7 +14,7 @@
 Whenever you install a golang binary package (`lazygit/lazydocker/gh/micro` etc), it installs all it's dependencies into `GOPATH`.
 It installs the binary into `GOBIN` which should be included in your `PATH` variable.
 
-When you want to update a package, you are requied to run the command again but do you remember the repository url ?
+When you want to update the package, how to update it ?
 
 When you want to remove it, you can remove the binary with a simple `rm` command, but what about the dependencies ?
 
@@ -55,6 +55,13 @@ Also, it can manage your personal projects, so you can easily install and update
 
 ## Installation
 
+You can download the binary from the [release](https://github.com/pspiagicw/gox/releases) section.
+You can bootstrap `gox` from itself!
+
+```sh
+/download/location/of/gox install github.com/pspiagicw/gox@latest
+```
+
 
 ## Getting Help
 
@@ -66,15 +73,15 @@ For more information about any subcommand run `gox help [subcommand]`.
 
 There are plenty of tools that are best enjoyed with `gox`. `gox` makes the installation and management of these tools a breeze.
 
-- gopls (The Golang Language Server) `gox install golang.org/x/tools/gopls@latest`
-- lazygit (TUI interface for git) `gox install github.com/jesseduffield/lazygit@latest`
-- lazydocker (TUI interface for docker) `gox install github.com/jesseduffield/lazydocker@latest`
-- circumflex (TUI interface for hackernews) `gox install https://github.com/bensadeh/circumflex`
+- [gopls](https://golang.org/x/tools/gopls) (The Golang Language Server) `gox install golang.org/x/tools/gopls@latest`
+- [lazygit](https://github.com/jesseduffield/lazygit) (TUI interface for git) `gox install github.com/jesseduffield/lazygit@latest`
+- [lazydocker](https://github.com/jesseduffield/lazydocker) (TUI interface for docker) `gox install github.com/jesseduffield/lazydocker@latest`
+- [circumflex](https://github.com/bensadeh/circumflex) (TUI interface for hackernews) `gox install github.com/bensadeh/circumflex@latest`
 
 Shameless Plug!
 
-- qemantra (CLI interface to QEMU) `gox install github.com/pspiagicw/qemantra@latest`
-- groom (Build tool written in Golang) `gox install github.com/pspiagicw/groom@latest`
+- [qemantra](https://github.com/pspiagicw/qemantra) (CLI interface to QEMU) `gox install github.com/pspiagicw/qemantra@latest`
+- [groom](https://github.com/pspiagicw/groom) (Build tool written in Golang) `gox install github.com/pspiagicw/groom@latest`
 
 These are just examples to present the case of why this tool might be useful in your workflow.
 
