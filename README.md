@@ -15,6 +15,7 @@ Whenever you install a golang binary package (`lazygit/lazydocker/gh/micro` etc)
 It installs the binary into `GOBIN` which should be included in your `PATH` variable.
 
 When you want to update a package, you are requied to run the command again but do you remember the repository url ?
+
 When you want to remove it, you can remove the binary with a simple `rm` command, but what about the dependencies ?
 
 Analogous to `pipx` and `npx`, `gox` installs the binary in isolation and symlinks it into `~/.local/bin`.
