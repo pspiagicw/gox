@@ -6,6 +6,7 @@ Set MarginFill "#6B50FF"
 Set Padding 15
 
 Set Theme "Catppuccin Mocha"
+Set FontSize 16
 
 Set FontFamily "JetBrains Mono"
 

@@ -4,6 +4,7 @@ Set Margin 20
 Set MarginFill "#6B50FF"
 
 Set Padding 15
+Set FontSize 16
 
 Set Theme "Catppuccin Mocha"
 
