@@ -84,11 +84,31 @@ func HelpRemove() {
     fmt.Println()
 }
 func HelpUpdate() {
-	// TODO: Print Help message for Update of package.
-	goreland.LogInfo("Printing help for update command not implemented yet!")
+    fmt.Println("Update golang packages")
+    fmt.Println()
+    fmt.Println("USAGE")
+    fmt.Println("  gox remove [flags] <package-name>")
+    fmt.Println()
+    fmt.Println("ARGUMENTS")
+    fmt.Println("  The package to update is to be specified by the package name shown on `gox list`")
+    fmt.Println()
+    fmt.Println("EXAMPLES")
+    fmt.Println("  $ gox update gopls")
+    fmt.Println()
 }
-func HelpArgs(args []string) {
+func HelpList() {
+    fmt.Println("List golang packages")
+    fmt.Println()
+    fmt.Println("USAGE")
+    fmt.Println("  gox list [flags]")
+    fmt.Println()
+    fmt.Println("EXAMPLES")
+    fmt.Println("  $ gox list")
+    fmt.Println()
+}
+func HelpArgs(args []string, version string) {
     if len(args) == 0 {
+        PrintUsage(version)
         return
     }
     cmd := args[0]
@@ -97,6 +117,7 @@ func HelpArgs(args []string) {
         "install": HelpInstall,
         "remove": HelpRemove,
         "update": HelpUpdate,
+        "list": HelpList,
     }
 
     handlerFunc, exists := handlers[cmd]

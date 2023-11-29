@@ -12,7 +12,9 @@ import (
 func HandleArgs(cmd string, args []string, version string) {
 
 	handlers := map[string]func([]string){
-		"help":       help.HelpArgs,
+		"help":       func([]string) {
+            help.HelpArgs(args, version)
+        },
 		"install":    install.InstallPackage,
 		"remove":     remove.RemovePackage,
 		"list":       list.ListPackage,
