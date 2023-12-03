@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/adrg/xdg"
 	"github.com/pspiagicw/goreland"
 )
 
@@ -16,12 +17,7 @@ func InstallDir() string {
 }
 
 func HomeDir() string {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		goreland.LogFatal("Error while getting $HOME directory: %v", err)
-	}
-
-	return homeDir
+	return xdg.Home
 }
 
 func BinDir() string {
@@ -33,16 +29,7 @@ func BinDir() string {
 }
 
 func DataDir() string {
-	location, exists := os.LookupEnv("XDG_DATA_HOME")
-	if !exists {
-		goreland.LogInfo("Not using $XDG_DATA_HOME, env variable not present")
-		homedir := HomeDir()
-		d := filepath.Join(homedir, ".local")
-		d = filepath.Join(d, "share")
-		goreland.LogInfo("Using %s for data", d)
-		location = d
-	}
-	location = filepath.Join(location, "gox")
+	location := filepath.Join(xdg.DataHome, "gox")
 	EnsureExists(location)
 	return location
 }

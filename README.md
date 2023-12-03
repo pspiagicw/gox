@@ -85,6 +85,10 @@ Shameless Plug!
 
 These are just examples to present the case of why this tool might be useful in your workflow.
 
+## Similar projects
+
+- [gup](https://github.com/nao1215/gup)
+
 ## Contributing
 
 You are more than welcome to raise issues and PR in the repository

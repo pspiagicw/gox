@@ -3,6 +3,7 @@ module github.com/pspiagicw/gox
 go 1.21.0
 
 require (
+	github.com/adrg/xdg v0.4.0
 	github.com/boltdb/bolt v1.3.1
 	github.com/briandowns/spinner v1.23.0
 	github.com/charmbracelet/lipgloss v0.9.1
