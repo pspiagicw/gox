@@ -2,6 +2,23 @@
 
 `gox` is a tool to manage binary golang packages.
 
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [`gox`](#gox)
+   * [Features](#features)
+   * [Inspiration](#inspiration)
+   * [Functionality](#functionality)
+      + [Install](#install)
+      + [Remove](#remove)
+      + [Update](#update)
+      + [List](#list)
+   * [Installation](#installation)
+   * [Getting Help](#getting-help)
+   * [Tools](#tools)
+   * [Contributing](#contributing)
+
+<!-- TOC end -->
+
 ## Features
 
 - 📦️ Compile and manage binary packages easily
