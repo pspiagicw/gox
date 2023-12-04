@@ -14,6 +14,7 @@ import (
 func CompileProject(url string) (string, error) {
 
     s := spinner.New(spinner.CharSets[14], 100 * time.Millisecond)
+    s.Suffix = " Compiling something awesome! ✨"
     s.Start()
 	dir := getTemp()
 	environments := getEnvironments(dir)
