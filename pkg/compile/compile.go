@@ -13,20 +13,30 @@ import (
 
 func CompileProject(url string) (string, error) {
 
-    s := spinner.New(spinner.CharSets[14], 100 * time.Millisecond)
-    s.Suffix = " Compiling something awesome! ✨"
-    s.Start()
 	dir := getTemp()
+
 	environments := getEnvironments(dir)
+
     err := goreland.ExecuteWithoutOutput("go", []string{"install", url}, environments)
+
 	if err != nil {
 		return "", fmt.Errorf("Error executing 'go install': %v", err)
 	}
 
 	binDir := getBinDir(dir)
-    s.Stop()
+
     goreland.LogSuccess("Package compiled succesfully!")
+
 	return binDir, nil
+}
+func startSpinner() func() {
+    s := spinner.New(spinner.CharSets[14], 100 * time.Millisecond)
+    s.Suffix = " Compiling something awesome! ✨"
+    s.Start()
+    return func() {
+        s.Stop()
+    }
+
 }
 
 func getEnvironments(dir string) []string {
