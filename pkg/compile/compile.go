@@ -15,6 +15,8 @@ func CompileProject(url string) (string, error) {
 
 	dir := getTemp()
 
+    stopSpinner := startSpinner()
+
 	environments := getEnvironments(dir)
 
     err := goreland.ExecuteWithoutOutput("go", []string{"install", url}, environments)
@@ -26,6 +28,8 @@ func CompileProject(url string) (string, error) {
 	binDir := getBinDir(dir)
 
     goreland.LogSuccess("Package compiled succesfully!")
+
+    stopSpinner()
 
 	return binDir, nil
 }
