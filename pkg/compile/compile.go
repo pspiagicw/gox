@@ -15,31 +15,30 @@ func CompileProject(url string) (string, error) {
 
 	dir := getTemp()
 
-    stopSpinner := startSpinner()
+	stopSpinner := startSpinner()
 
 	environments := getEnvironments(dir)
 
-    err := goreland.ExecuteWithoutOutput("go", []string{"install", url}, environments)
+	err := goreland.ExecuteWithoutOutput("go", []string{"install", url}, environments)
 
 	if err != nil {
 		return "", fmt.Errorf("Error executing 'go install': %v", err)
 	}
 
+	stopSpinner()
 	binDir := getBinDir(dir)
 
-    goreland.LogSuccess("Package compiled succesfully!")
-
-    stopSpinner()
+	goreland.LogSuccess("Package compiled succesfully!")
 
 	return binDir, nil
 }
 func startSpinner() func() {
-    s := spinner.New(spinner.CharSets[14], 100 * time.Millisecond)
-    s.Suffix = " Compiling something awesome! ✨"
-    s.Start()
-    return func() {
-        s.Stop()
-    }
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
+	s.Suffix = " Compiling something awesome! ✨"
+	s.Start()
+	return func() {
+		s.Stop()
+	}
 
 }
 

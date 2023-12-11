@@ -9,6 +9,9 @@ ldflags = "-X main.VERSION=$version"
 description = "Build the project"
 environment = ["CGO_ENABLED=0"]
 command = 'go build -ldflags "$ldflags" -o $name ${main-file}'
+depends = [
+    "format"
+]
 
 [task.format]
 description = "Format the project."

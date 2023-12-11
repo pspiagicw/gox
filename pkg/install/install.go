@@ -106,7 +106,7 @@ func installFile(dir, filename string) (string, error) {
 func parseInstallFlags(args []string) string {
 	flag := flag.NewFlagSet("gox install", flag.ExitOnError)
 
-    flag.Usage = help.HelpInstall
+	flag.Usage = help.HelpInstall
 	flag.Parse(args)
 	args = flag.Args()
 

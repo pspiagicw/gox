@@ -10,8 +10,8 @@ import (
 func ParseArguments(VERSION string) (string, []string) {
 
 	flag.Usage = func() {
-        help.PrintUsage(VERSION)
-    }
+		help.PrintUsage(VERSION)
+	}
 
 	flag.Parse()
 	args := flag.Args()

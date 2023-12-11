@@ -14,7 +14,7 @@ import (
 func parseRemoveFlags(args []string) string {
 	flag := flag.NewFlagSet("gox remove", flag.ExitOnError)
 
-    flag.Usage = help.HelpRemove
+	flag.Usage = help.HelpRemove
 	flag.Parse(args)
 	args = flag.Args()
 

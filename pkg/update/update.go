@@ -12,7 +12,7 @@ import (
 func parseUpdateFlags(args []string) string {
 	flag := flag.NewFlagSet("gox update", flag.ExitOnError)
 
-    flag.Usage = help.HelpUpdate
+	flag.Usage = help.HelpUpdate
 	flag.Parse(args)
 	args = flag.Args()
 
