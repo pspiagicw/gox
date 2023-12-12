@@ -3,6 +3,7 @@ package update
 import (
 	"flag"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/gox/pkg/database"
 	"github.com/pspiagicw/gox/pkg/help"
@@ -24,6 +25,16 @@ func parseUpdateFlags(args []string) string {
 
 	return args[0]
 }
+func confirmUpdate(entry string) {
+	confirm := false
+	prompt := survey.Confirm{
+		Message: "Do you want to update [" + entry + "] ?",
+	}
+	survey.AskOne(&prompt, &confirm)
+	if !confirm {
+		goreland.LogFatal("User cancelled the update!")
+	}
+}
 
 func UpdatePackage(args []string) {
 	name := parseUpdateFlags(args)
@@ -37,6 +48,8 @@ func UpdatePackage(args []string) {
 	}
 
 	goreland.LogInfo("Using '%s' for [%s]", entry.URL, entry.Name)
+
+	confirmUpdate(entry.URL)
 
 	install.InstallPackage([]string{entry.URL})
 }

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/gox/pkg/compile"
 	"github.com/pspiagicw/gox/pkg/database"
@@ -31,13 +32,25 @@ func updateDatabase(filename string, filepath string, url string) {
 		os.Exit(1)
 	}
 }
+func confirmReinstall(name string) {
+	confirm := false
+	fmt.Printf("[%s] is already installed!", name)
+	prompt := survey.Confirm{
+		Message: "Do you want to reinstall [" + name + "] ?",
+	}
+	survey.AskOne(&prompt, &confirm)
+	if !confirm {
+		goreland.LogFatal("User cancelled the install!")
+	}
+
+}
 
 func checkReinstall(name string) {
 	db := database.ParseDatabase()
 
 	for key := range db.Packages {
 		if key == name {
-			goreland.LogInfo("Package %s already installed, reinstalling...", name)
+			confirmReinstall(name)
 		}
 	}
 }
@@ -127,12 +140,25 @@ func getCurrentDir() string {
 	return dir
 
 }
+func confirmOnce(url string) {
+	confirm := false
+	prompt := survey.Confirm{
+		Message: "Do you want to install [" + url + "] ?",
+	}
+	survey.AskOne(&prompt, &confirm)
+	if !confirm {
+		goreland.LogFatal("User cancelled the install!")
+	}
+
+}
 func InstallPackage(args []string) {
 	url := parseInstallFlags(args)
 
 	if url == "." {
 		url = getCurrentDir()
 	}
+
+	confirmOnce(url)
 
 	binDir, err := compile.CompileProject(url)
 	if err != nil {
