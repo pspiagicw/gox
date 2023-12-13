@@ -51,7 +51,7 @@ func UpdatePackage(args []string) {
 
 	confirmUpdate(entry.URL)
 
-	install.InstallPackage([]string{entry.URL})
+	install.InstallPackage([]string{entry.URL}, true)
 }
 func UpdateAll(args []string) {
 	db := database.ParseDatabase()

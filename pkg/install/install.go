@@ -54,9 +54,11 @@ func checkReinstall(name string) {
 		}
 	}
 }
-func installBinary(dir string, entry fs.DirEntry, url string) {
+func installBinary(dir string, entry fs.DirEntry, url string, skipConfirm bool) {
 
-	checkReinstall(entry.Name())
+	if !skipConfirm {
+		checkReinstall(entry.Name())
+	}
 	goreland.LogInfo("Installing '%s'", entry.Name())
 
 	newLocation, err := installFile(dir, entry.Name())
@@ -151,14 +153,16 @@ func confirmOnce(url string) {
 	}
 
 }
-func InstallPackage(args []string) {
+func InstallPackage(args []string, skipConfirm bool) {
 	url := parseInstallFlags(args)
 
 	if url == "." {
 		url = getCurrentDir()
 	}
 
-	confirmOnce(url)
+	if !skipConfirm {
+		confirmOnce(url)
+	}
 
 	binDir, err := compile.CompileProject(url)
 	if err != nil {
@@ -166,7 +170,7 @@ func InstallPackage(args []string) {
 	}
 
 	binary := getBinary(binDir)
-	installBinary(binDir, binary, url)
+	installBinary(binDir, binary, url, skipConfirm)
 }
 
 func getBinary(binDir string) fs.DirEntry {

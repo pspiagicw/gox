@@ -15,9 +15,11 @@ func HandleArgs(cmd string, args []string, version string) {
 		"help": func([]string) {
 			help.HelpArgs(args, version)
 		},
-		"install": install.InstallPackage,
-		"remove":  remove.RemovePackage,
-		"list":    list.ListPackage,
+		"install": func(args []string) {
+			install.InstallPackage(args, false)
+		},
+		"remove": remove.RemovePackage,
+		"list":   list.ListPackage,
 		"version": func([]string) {
 			help.PrintVersion(version)
 		},
